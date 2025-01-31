@@ -1,0 +1,24 @@
+<div class="main">
+  <div class="main__header">
+    <mat-form-field appearance="outline">
+      <mat-label>City name</mat-label>
+      <input matInput type="text" [formControl]="cityName">
+      <mat-error *ngIf="cityName.getError('message')">{{cityName.getError('message')}}</mat-error>
+      <mat-error *ngIf="cityName.getError('required')">Required</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="main__content" *ngIf="weather?.weather">
+    <mat-card appearance="outlined">
+      <mat-card-header>Temperature:</mat-card-header>
+      <mat-card-content>{{weather?.main?.temp_max}}</mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header>Humidity:</mat-card-header>
+      <mat-card-content>{{weather?.main?.humidity}}</mat-card-content>
+    </mat-card>
+    <mat-card appearance="outlined">
+      <mat-card-header>Description:</mat-card-header>
+      <mat-card-content>{{weather?.weather?.[0]?.description}}</mat-card-content>
+    </mat-card>
+  </div>
+</div>
