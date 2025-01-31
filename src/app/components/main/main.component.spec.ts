@@ -45,7 +45,7 @@ describe('MainComponent', (): void => {
   };
 
   beforeEach(async (): Promise<void> => {
-    const weatherServiceSpy = jasmine.createSpyObj('WeatherService', ['search']);
+    const weatherServiceSpy = jasmine.createSpyObj('WeatherService', ['search', 'getCities']);
 
     await TestBed.configureTestingModule({
       imports: [
