@@ -6,6 +6,7 @@
       <mat-error *ngIf="cityName.getError('message')">{{cityName.getError('message')}}</mat-error>
       <mat-error *ngIf="cityName.getError('required')">Required</mat-error>
     </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addCity()" [disabled]="!weather">Add City</button>
   </div>
   <div class="main__content" *ngIf="weather?.weather">
     <mat-card appearance="outlined">
@@ -19,6 +20,19 @@
     <mat-card appearance="outlined">
       <mat-card-header>Description:</mat-card-header>
       <mat-card-content>{{weather?.weather?.[0]?.description}}</mat-card-content>
+    </mat-card>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Favorite Cities</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ul>
+          <li *ngFor="let city of cities">
+            <button mat-button (click)="loadWeatherForCity(city)">{{ city }}</button>
+            <button mat-icon-button color="warn" (click)="removeCity(city)">x</button>
+          </li>
+        </ul>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>

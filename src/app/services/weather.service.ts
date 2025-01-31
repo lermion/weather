@@ -21,4 +21,21 @@ export class WeatherService {
 
     return this.http.get<IWeather>(this.apiUrl, { params });
   }
+
+  getCities(): string[] {
+    return JSON.parse(localStorage.getItem('cities') || '[]');
+  }
+
+  addCity(city: string): void {
+    const favorites: string[] = this.getCities();
+    if (!favorites.includes(city)) {
+      favorites.push(city);
+      localStorage.setItem('cities', JSON.stringify(favorites));
+    }
+  }
+
+  removeCity(city: string): void {
+    const favorites: string[] = this.getCities().filter((fav: string): boolean => fav !== city);
+    localStorage.setItem('cities', JSON.stringify(favorites));
+  }
 }

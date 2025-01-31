@@ -6,6 +6,9 @@
   align-items: center;
   width: 100%;
   &__header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
     mat-form-field {
       width: 400px;
     }

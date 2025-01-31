@@ -6,8 +6,9 @@ import { catchError, debounceTime, distinctUntilChanged, EMPTY, Observable, of, 
 import { SubscriptionHandler } from '../../subscription-handler';
 import { WeatherService } from '../../services/weather.service';
 import { IWeather } from '../../interfaces/weather.interface';
-import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card';
+import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { MatButton, MatIconButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-main',
@@ -22,7 +23,10 @@ import { CommonModule } from '@angular/common';
     MatCard,
     MatCardContent,
     MatCardHeader,
-    MatError
+    MatCardTitle,
+    MatError,
+    MatButton,
+    MatIconButton
   ],
   styleUrl: './main.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -30,6 +34,7 @@ import { CommonModule } from '@angular/common';
 export class MainComponent extends SubscriptionHandler {
   public cityName: FormControl<string | null> = new FormControl('', Validators.required);
   public weather: IWeather | undefined;
+  public cities: string[] = [];
   private cache: Map<string, {data: IWeather; timestamp: number}> =
     new Map<string, { data: IWeather, timestamp: number }>();
   private cacheDuration: number = 3600000;
@@ -37,6 +42,7 @@ export class MainComponent extends SubscriptionHandler {
     private readonly weatherService: WeatherService
   ) {
     super();
+    this.cities = this.weatherService.getCities();
     this.cityName.valueChanges.pipe(
       debounceTime(500),
       takeUntil(this.ngUnsubscribe),
@@ -62,5 +68,21 @@ export class MainComponent extends SubscriptionHandler {
         return of(data);
       })
     );
+  }
+
+  public addCity(): void {
+    if (this.weather?.name) {
+      this.weatherService.addCity(this.weather.name);
+      this.cities = this.weatherService.getCities();
+    }
+  }
+
+  public removeCity(city: string): void {
+    this.weatherService.removeCity(city);
+    this.cities = this.weatherService.getCities();
+  }
+
+  public loadWeatherForCity(city: string): void {
+    this.cityName.setValue(city);
   }
 }
